@@ -1,0 +1,25 @@
+pipeline {
+    agent any
+    stages {
+        stage('Clone') {
+            steps {
+                sh "rm -rf *"
+                sh "git clone https://github.com/karimFSL/jenkins-tuto"
+            }
+        }
+
+
+        stage('Build') {
+            steps {
+                sh "cd tuto-jenkins-1 && javac Main.java"
+            }
+        }
+
+
+        stage('Run') {
+            steps {
+                sh "java Main"
+            }
+        }
+    }
+}
