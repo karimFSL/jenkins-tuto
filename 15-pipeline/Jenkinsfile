@@ -3,47 +3,54 @@ pipeline {
     
     tools {
     jdk 'jdk9_update00'
+    maven 'mvn_363'
     }
     stages {
-        stage('Clone') {
+        stage('Clean workspace') {
             steps {
-                sh "rm -rf *"
-                sh "git clone https://github.com/karimFSL/jenkins-tuto"
+                sh "rm -rf *"      
             }
         }
 
 
-        stage('Build') {
+        stage('Clean & package') {
             steps {
                 sh "java -version"
-                sh "cd jenkins-tuto/tuto-jenkins-1 && javac Main.java"
+                sh "cd jenkins-tuto/14-maven/helloworld/ && mvn clean package"
             }
         }
 
 
-        stage('Run') {
+        stage('SonarQube Analysis') {
             steps {
-                sh "cd jenkins-tuto/tuto-jenkins-1 && java Main"
+                sh "cd jenkins-tuto/14-maven/helloworld/  && mvn sonar:sonar"
             }
         }
         
-         stage('Tests SoapUI') {
-            steps {
-                sh "/opt/SmartBear/SoapUI-5.6.0/bin/testrunner.sh -r jenkins-tuto/14-maven/helloworld/tests/soapui/Project1-soapui-project.xml"
-            }
-        }
+     
         
-        stage('Sonarqube') {
+        stage('Sonarqube qualityGate') {
             environment {
                 scannerHome = tool 'sonarqubeScanner'
-            } steps {
+            } 
+            
+            steps {
         
                 withSonarQubeEnv('sonarqubeServer') {
                     sh "cd jenkins-tuto/14-maven/helloworld/ && ${scannerHome}/bin/sonar-scanner"
                     
-                }   timeout(time: 10, unit: 'MINUTES') {
+                }   
+                
+                timeout(time: 10, unit: 'MINUTES') {
                         waitForQualityGate abortPipeline: true
-                    }
+                }
+            }
+        }
+
+
+        stage('Tests SoapUI') {
+            steps {
+                sh "/opt/SmartBear/SoapUI-5.6.0/bin/testrunner.sh -r jenkins-tuto/14-maven/helloworld/tests/soapui/Project1-soapui-project.xml"
             }
         }
     }
