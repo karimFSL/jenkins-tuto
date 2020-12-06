@@ -27,5 +27,11 @@ pipeline {
                 sh "cd jenkins-tuto/tuto-jenkins-1 && java Main"
             }
         }
+        
+         stage('Tests SoapUI') {
+            steps {
+                sh "/opt/SmartBear/SoapUI-5.6.0/bin/testrunner.sh -r jenkins-tuto/14-maven/helloworld/tests/soapui/Project1-soapui-project.xml"
+            }
+        }
     }
 }
