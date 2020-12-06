@@ -32,5 +32,19 @@ pipeline {
                 sh "/opt/SmartBear/SoapUI-5.6.0/bin/testrunner.sh -r jenkins-tuto/14-maven/helloworld/tests/soapui/Project1-soapui-project.xml"
             }
         }
+        
+        stage('Sonarqube') {
+            environment {
+                scannerHome = tool 'sonarqubeScanner'
+            } steps {
+        
+                withSonarQubeEnv('sonarqubeServer') {
+                    sh "cd jenkins-tuto/14-maven/helloworld/ && ${scannerHome}/bin/sonar-scanner"
+                    
+                }   timeout(time: 10, unit: 'MINUTES') {
+                        waitForQualityGate abortPipeline: true
+                    }
+            }
+        }
     }
 }
