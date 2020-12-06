@@ -9,6 +9,7 @@ pipeline {
             steps {
                 sh "rm -rf *"
                 sh "git clone https://github.com/karimFSL/jenkins-tuto"
+                sh "ls -alt /opt"
             }
         }
 
