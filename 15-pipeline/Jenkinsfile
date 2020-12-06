@@ -1,5 +1,9 @@
 pipeline {
     agent any
+    
+    tools {
+    jdk 'jdk8_update221'
+    }
     stages {
         stage('Clone') {
             steps {
@@ -11,14 +15,15 @@ pipeline {
 
         stage('Build') {
             steps {
-                sh "cd tuto-jenkins-1 && javac Main.java"
+                sh "java -version"
+                sh "cd jenkins-tuto/tuto-jenkins-1 && javac Main.java"
             }
         }
 
 
         stage('Run') {
             steps {
-                sh "java Main"
+                sh "cd jenkins-tuto/tuto-jenkins-1 && java Main"
             }
         }
     }
