@@ -24,12 +24,12 @@ pipeline {
      
         
         stage('Sonarqube qualityGate') {
-      /*      environment {
-                
-            } */
+            scropt {
+                def scannerHome = tool 'sonarqubeScanner'
+            } 
             
             steps {
-                def scannerHome = tool 'sonarqubeScanner'
+                
 
                 withSonarQubeEnv('sonarqubeServer') {
                     sh "cd 14-maven/helloworld/ && ${scannerHome}/bin/sonar-scanner"
