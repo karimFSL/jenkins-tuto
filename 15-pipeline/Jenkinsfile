@@ -6,9 +6,10 @@ pipeline {
     maven 'mvn_363'
     }
     stages {
-        stage('Clean workspace') {
+        stage('Git checkout') {
             steps {
                 sh "rm -rf *"      
+                git credentialsId: 'githubCred', url: 'https://github.com/karimFSL/jenkins-tuto'
             }
         }
 
