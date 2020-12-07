@@ -29,7 +29,7 @@ pipeline {
                 
                 script {
 
-                    withCredentials([string(credentialsId: 'sonarqubeTokenServer', variable: 'SECRET')]) { //set SECRET with the credential content
+                    withCredentials([string(credentialsId: 'sonarqubeToken', variable: 'SECRET')]) { //set SECRET with the credential content
 
                         def scannerHome = tool 'sonarqubeScanner'
                     
