@@ -6,25 +6,18 @@ pipeline {
     maven 'mvn_363'
     }
     stages {
-        stage('Git checkout') {
-            steps {
-                sh "rm -rf *"      
-                git credentialsId: 'githubCred', url: 'https://github.com/karimFSL/jenkins-tuto'
-            }
-        }
-
 
         stage('Clean & package') {
             steps {
                 sh "java -version"
-                sh "cd jenkins-tuto/14-maven/helloworld/ && mvn clean package"
+                sh "cd 14-maven/helloworld/ && mvn clean package"
             }
         }
 
 
         stage('SonarQube Analysis') {
             steps {
-                sh "cd jenkins-tuto/14-maven/helloworld/  && mvn sonar:sonar"
+                sh "cd 14-maven/helloworld/  && mvn sonar:sonar"
             }
         }
         
@@ -38,7 +31,7 @@ pipeline {
             steps {
         
                 withSonarQubeEnv('sonarqubeServer') {
-                    sh "cd jenkins-tuto/14-maven/helloworld/ && ${scannerHome}/bin/sonar-scanner"
+                    sh "cd 14-maven/helloworld/ && ${scannerHome}/bin/sonar-scanner"
                     
                 }   
                 
