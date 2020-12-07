@@ -29,15 +29,17 @@ pipeline {
                 
                 script {
                     def scannerHome = tool 'sonarqubeScanner'
-                } 
-            
-                withSonarQubeEnv('sonarqubeServer') {
-                    sh "cd 14-maven/helloworld/ && ${scannerHome}/bin/sonar-scanner"
-                    
-                }   
+                 
                 
-                timeout(time: 10, unit: 'MINUTES') {
-                        waitForQualityGate abortPipeline: true
+                    withSonarQubeEnv('sonarqubeServer') {
+                        sh "cd 14-maven/helloworld/ && ${scannerHome}/bin/sonar-scanner"
+                        
+                    }   
+                    
+                    timeout(time: 10, unit: 'MINUTES') {
+                            waitForQualityGate abortPipeline: true
+                    }
+
                 }
             }
         }
