@@ -28,16 +28,25 @@ pipeline {
             steps {
                 
                 script {
-                    def scannerHome = tool 'sonarqubeScanner'
-                 
-                
-                    withSonarQubeEnv('sonarqubeServer') {
-                        sh "cd 14-maven/helloworld/ && ${scannerHome}/bin/sonar-scanner"
-                        
-                    }   
+
+                    withCredentials([string(credentialsId: 'sonarqubeTokenServer', variable: 'SECRET')]) { //set SECRET with the credential content
+
+                        def scannerHome = tool 'sonarqubeScanner'
                     
-                    timeout(time: 10, unit: 'MINUTES') {
-                            waitForQualityGate abortPipeline: true
+                    
+                        withSonarQubeEnv('sonarqubeServer') {
+                            sh "cd 14-maven/helloworld/ && ${scannerHome}/bin/sonar-scanner \
+                                                        -Dsonar.projectKey=com.xavki:helloworld-app \
+                                                        -Dsonar.sources=. \
+                                                        -Dsonar.host.url=http://localhost:9000 \
+                                                        -Dsonar.login=${SECRET}"
+                            
+                        }   
+                        
+                        timeout(time: 10, unit: 'MINUTES') {
+                                waitForQualityGate abortPipeline: true
+                        }
+
                     }
 
                 }
