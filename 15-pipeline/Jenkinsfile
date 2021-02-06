@@ -14,7 +14,7 @@ pipeline {
             }
         }
 
-
+    /*
         stage('SonarQube Analysis') {
             steps {
                 sh "cd 14-maven/helloworld/  && mvn sonar:sonar"
@@ -52,7 +52,7 @@ pipeline {
                 }
             }
         }
-
+    */
 
         stage('Tests SoapUI') {
             steps {
